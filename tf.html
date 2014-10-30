@@ -6,7 +6,8 @@
 <script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
 
 <script type="text/javascript" type="text/javascript">
-  // Connecting to ROS
+
+// Connecting to ROS
   // -----------------
   var ros = new ROSLIB.Ros({
     url : 'ws://localhost:9090'
@@ -60,22 +61,22 @@
   button.pos_left {
     position: absolute;
     left: 20px;
-    top: 325px;
+    top: 350px;
   }
   button.pos_right{
     position: absolute;
     left: 75px;
-    top: 325px;
+    top: 350px;
   }
   button.pos_up{
     position: absolute;
     left: 50px;
-    top: 300px;
+    top: 325px;
   }
   button.pos_down{
     position: absolute;
     left: 50px;
-    top: 325px;
+    top: 350px;
   }
 
   </style>
@@ -94,6 +95,11 @@
     </li>
     <li>Use your arrow keys on your keyboard to move the turtle (must have <tt>turtle_tf_demo.launch</tt>
       terminal focused).</li>
+      <p></p>
+      <p></p>
+      <li><tt> *OR* </tt></li>
+      <li><tt>roscore</tt>
+      <li><tt>roslaunch rwebtool rwebtool.launch</tt></li>
   </ol>
 
   
