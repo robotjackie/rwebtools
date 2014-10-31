@@ -3,18 +3,17 @@ Jackie Wu and Athulya Simon
 
 ##What We Were Trying to Do
 
-##The Result
+###What We Used
 
-##Interesting Insights
+###The Result
 
-##How We Did It
+###How We Did It
 We found code on http://iguanatronics.com/igtron/?p=313
+
+###Interesting Insights
 
 ##Difficulties We Had
 
-##What We Used
+###Mistakes We Found
 
-
-##Mistakes We Found
-
-##Useful Resources
+###Useful Resources
