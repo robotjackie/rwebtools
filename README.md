@@ -22,5 +22,5 @@ We found code on http://iguanatronics.com/igtron/?p=313
 ####Mistakes We Found
 
 ####Useful Resources
-'rosbridge' http://wiki.ros.org/rosbridge_suite
+[`rosbridge suite`](http://wiki.ros.org/rosbridge_suite)
 
