@@ -3,7 +3,10 @@ Jackie Wu and Athulya Simon
 
 Jarvis Schultz, EECS 495 Embedded Systems in ROS, Fall 2014, Northwestern University
 
+
 ####What We Were Trying to Do
+Our assignment is to allow an Internet browser to interact with a ROS interface. We 
+
 
 ####What We Used
 
@@ -19,3 +22,5 @@ We found code on http://iguanatronics.com/igtron/?p=313
 ####Mistakes We Found
 
 ####Useful Resources
+'rosbridge' http://wiki.ros.org/rosbridge_suite
+
