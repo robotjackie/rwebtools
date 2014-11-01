@@ -27,11 +27,9 @@ On a computer with a ROS active node, we used `rosbridge` to connect to WebSocke
 
 After running `roscore`, install rosbridge:
 
-  sudo apt-get install ros-hydro-rosbridge-suite
-  
+    sudo apt-get install ros-hydro-rosbridge-suite
 Then launch it with
-
-  roslaunch rosbridge_server rosbridge_websocket.launch
+    roslaunch rosbridge_server rosbridge_websocket.launch
   
 In our website's HTML file, we import the necessary Javascript libraries such as `roslibjs` to write certain ROS functions for the HTML website.
 
