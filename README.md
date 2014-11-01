@@ -23,65 +23,66 @@ Our assignment was to allow an Internet browser to interact with ROS.
 ####Result
 
 ####How We Did It
-First, we ran turtlesim on a web browser.
+First, we wanted to get `turtlesim` to run on a web browser.
 
-We found code on [this site, Iguanatronics](http://iguanatronics.com/igtron/?p=313), that showed how to create an HTML webpage on our local computer to control the `Turtlesim` with, via the `turtle_teleop_key` node. This meant the first part of our assignment was very easy. 
+We found code on [this site, Iguanatronics](http://iguanatronics.com/igtron/?p=313), that showed how to create an HTML webpage, stored on our local computer, to control `turtlesim` via submitting commands to the `turtle_teleop_key` node. This meant the first part of our assignment was very easy. 
 
-On a computer with an active turtlesim node, we used `rosbridge` to connect to WebSocket, a protocol that allows remote devices to communicate to a web browser, to connect to a website where we had a user interface to control `turtle_teleop_key`. 
+On a computer with an active `turtlesim` node, we used the ROS package `rosbridge` to connect to WebSocket, which is a protocol that allows remote devices to communicate to a web browser. This in turn connected to a website where we wrote a user interface to control `turtle_teleop_key`. 
 
 After running `roscore` and opening the `turtlesim` node with
     
     rosrun turtlesim turtlesim_node
-    we installed rosbridge:
+    
+    we installed `rosbridge`:
 
     sudo apt-get install ros-hydro-rosbridge-suite
+    
 Then we launched it with
 
     roslaunch rosbridge_server rosbridge_websocket.launch
   
-Next, we created an HTML file to create a website on our local machine.
+Next, we created an HTML file to create a website on our local machine. In our website's HTML file, we import the necessary Javascript libraries, which are:
+*`roslibjs` to write certain ROS functions for the HTML website
+* EventEmitter2, something that allows us to emit "events" back to ROS, written in Javascript with Node.js, an open-source app building environment.
 
     <!DOCTYPE html>
     <html>
     <head>
-    
-In our website's HTML file, we import the necessary Javascript libraries, which are:
-*`roslibjs` to write certain ROS functions for the HTML website
-* EventEmitter2, something that allows us to emit "events" back to ROS, written in Javascript with Node.js, an open-source app building environment.
-* 
     <script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
-    <script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
-    <script type="text/javascript" type="text/javascript">
+	<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+	<script type="text/javascript" type="text/javascript">
 
 Next, there is some documented code on connecting to `rosbridge`.
     
-    // This function connects to the rosbridge server running on the local computer on port 9090
-  var rbServer = new ROSLIB.Ros({
+	// This function connects to the rosbridge server running on the local computer on port 9090
+	var rbServer = new ROSLIB.Ros({
     url : 'ws://localhost:9090'
-  });
+	});
 
-  // This function is called upon the rosbridge connection event
-  rbServer.on('connection', function() {
+    // This function is called upon the rosbridge connection event
+    rbServer.on('connection', function() {
+    
     // Write appropriate message to #feedback div when successfully connected to rosbridge
     var fbDiv = document.getElementById('feedback');
     fbDiv.innerHTML += "<p>Connected to websocket server.</p>";
-  });
+    });
 
-  // This function is called when there is an error attempting to connect to rosbridge
-  rbServer.on('error', function(error) {
+    // This function is called when there is an error attempting to connect to rosbridge
+    rbServer.on('error', function(error) {
+    	
     // Write appropriate message to #feedback div upon error when attempting to connect to rosbridge
     var fbDiv = document.getElementById('feedback');
     fbDiv.innerHTML += "<p>Error connecting to websocket server.</p>";
-  });
+    });
 
-  // This function is called when the connection to rosbridge is closed
-  rbServer.on('close', function() {
+    // This function is called when the connection to rosbridge is closed
+    rbServer.on('close', function() {
+    	
     // Write appropriate message to #feedback div upon closing connection to rosbridge
     var fbDiv = document.getElementById('feedback');
     fbDiv.innerHTML += "<p>Connection to websocket server closed.</p>";
-  });
+    });
   
-
 
 However, we also tried to:
 1. Put the HTML webpage online
