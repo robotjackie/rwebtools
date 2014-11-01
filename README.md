@@ -33,7 +33,7 @@ After running `roscore` and opening the `turtlesim` node with
     
     rosrun turtlesim turtlesim_node
     
-    we installed `rosbridge`:
+we installed `rosbridge`:
 
     sudo apt-get install ros-hydro-rosbridge-suite
     
@@ -45,14 +45,14 @@ Next, we created an HTML file to create a website on our local machine. In our w
 *`roslibjs` to write certain ROS functions for the HTML website
 * EventEmitter2, something that allows us to emit "events" back to ROS, written in Javascript with Node.js, an open-source app building environment.
 
-    <!DOCTYPE html>
+	<!DOCTYPE html>
     <html>
     <head>
     <script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
 	<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
 	<script type="text/javascript" type="text/javascript">
 
-Next, there is some documented code on connecting to `rosbridge`.
+Next, there is some documented code on connecting, disconnecting, or error in connecting to `rosbridge`.
     
 	// This function connects to the rosbridge server running on the local computer on port 9090
 	var rbServer = new ROSLIB.Ros({
@@ -61,7 +61,6 @@ Next, there is some documented code on connecting to `rosbridge`.
 
     // This function is called upon the rosbridge connection event
     rbServer.on('connection', function() {
-    
     // Write appropriate message to #feedback div when successfully connected to rosbridge
     var fbDiv = document.getElementById('feedback');
     fbDiv.innerHTML += "<p>Connected to websocket server.</p>";
@@ -69,7 +68,6 @@ Next, there is some documented code on connecting to `rosbridge`.
 
     // This function is called when there is an error attempting to connect to rosbridge
     rbServer.on('error', function(error) {
-    	
     // Write appropriate message to #feedback div upon error when attempting to connect to rosbridge
     var fbDiv = document.getElementById('feedback');
     fbDiv.innerHTML += "<p>Error connecting to websocket server.</p>";
@@ -77,7 +75,6 @@ Next, there is some documented code on connecting to `rosbridge`.
 
     // This function is called when the connection to rosbridge is closed
     rbServer.on('close', function() {
-    	
     // Write appropriate message to #feedback div upon closing connection to rosbridge
     var fbDiv = document.getElementById('feedback');
     fbDiv.innerHTML += "<p>Connection to websocket server closed.</p>";
