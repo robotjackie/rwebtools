@@ -42,18 +42,23 @@ Then we launched it with
     roslaunch rosbridge_server rosbridge_websocket.launch
   
 Next, we created an HTML file to create a website on our local machine. In our website's HTML file, we import the necessary Javascript libraries, which are:
-*`roslibjs` to write certain ROS functions for the HTML website
+
+* `roslibjs` to write certain ROS functions for the HTML website
+
 * EventEmitter2, something that allows us to emit "events" back to ROS, written in Javascript with Node.js, an open-source app building environment.
 
-	<!DOCTYPE html>
+~~~html
+    <!DOCTYPE html>
     <html>
     <head>
     <script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
-	<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
-	<script type="text/javascript" type="text/javascript">
+    <script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+    <script type="text/javascript" type="text/javascript">
+~~~
 
 Next, there is some documented code on connecting, disconnecting, or error in connecting to `rosbridge`.
-    
+
+~~~html    
 	// This function connects to the rosbridge server running on the local computer on port 9090
 	var rbServer = new ROSLIB.Ros({
     url : 'ws://localhost:9090'
@@ -79,10 +84,12 @@ Next, there is some documented code on connecting, disconnecting, or error in co
     var fbDiv = document.getElementById('feedback');
     fbDiv.innerHTML += "<p>Connection to websocket server closed.</p>";
     });
-  
+~~~  
 
 However, we also tried to:
+
 1. Put the HTML webpage online
+
 2. Do the extension assignments
 
 
@@ -94,5 +101,4 @@ However, we also tried to:
 
 ####Useful Resources
 * [`rosbridge page on ROS.org`](http://wiki.ros.org/rosbridge_suite)
-
 
