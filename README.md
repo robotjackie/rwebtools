@@ -8,8 +8,15 @@ Jarvis Schultz, EECS 495 Embedded Systems in ROS, Fall 2014, Northwestern Univer
 ####Project Goals
 Our assignment was to allow an Internet browser to interact with ROS.
 
-* As an extension goal of the assignment, create a more complex user interface to control the Turtlesim
-* As an extension goal of the assignment, put the Turtlesim visualization online and control its movements with a node on the local computer
+Specifically, we wanted to control Turtlesim on a local computer, through controls on a webpage. We wanted to create:
+
+* arrow keys analogous to the function of `turtle_teleop_key` that would control left/right turn and forward/backward motion of the turtle
+* input boxes that controlled the motion of the turtle (through its linear and angular velocity components)
+* the ability to change `turtlesim`'s background color (with sliders that controlled the RGB values of the background parameter)
+
+To do this, we needed to figure out how to publish and subscribe topics, get and set parameters, and call services from ROS on our computer to the web. 
+
+* As an extension goal of the assignment, put the Turtlesim visualization online and control its movements with a node on another computer
 * As a practical extension goal of the assignment, help Professor Lynch create a website to better visualize joint transformations for students in his Robotic Manipulation class
 
 ####ROS Package Dependencies and Other Things Needed
@@ -23,9 +30,9 @@ Our assignment was to allow an Internet browser to interact with ROS.
 ####Result
 
 ####How We Did It
-First, we wanted to get `turtlesim` to run on a web browser.
+**First**, we wanted to get `turtlesim` to run on a web browser hosted locally.
 
-We found code on this site, [Iguanatronics](http://iguanatronics.com/igtron/?p=313), that showed how to create an HTML webpage on our local computer to control the `Turtlesim` with, via the `turtle_teleop_key` node. This meant that learning to publish and subscirbe to messages was easy. We are currently figuring out how to set parameters.
+We found code on this site, [Iguanatronics](http://iguanatronics.com/igtron/?p=313), that showed how to create an HTML webpage, stored on our local computer, to control `turtlesim` via submitting commands to the `turtle_teleop_key` node. This meant the first part of our assignment was very easy. 
 
 On a computer with an active `turtlesim` node, we used the ROS package `rosbridge` to connect to WebSocket, which is a protocol that allows remote devices to communicate to a web browser. This in turn connected to a website where we wrote a user interface to control `turtle_teleop_key`. 
 
@@ -55,6 +62,7 @@ Next, we created an HTML file to create a website on our local machine. In our w
     <script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
     <script type="text/javascript" type="text/javascript">
 ~~~
+
 
 Next, there is some documented code on connecting, disconnecting, or error in connecting to `rosbridge`.
 
@@ -86,19 +94,107 @@ Next, there is some documented code on connecting, disconnecting, or error in co
     });
 ~~~  
 
-However, we also tried to:
 
-1. Put the HTML webpage online
+Now we write the functions to create a topic and write messages to ROS.
 
-2. Do the extension assignments
+~~~HTML
+// These lines create a topic object as defined by roslibjs
+  var cmdVelTopic = new ROSLIB.Topic({
+    ros : rbServer,
+    name : '/turtle1/cmd_vel',
+    messageType : 'geometry_msgs/Twist'
+  });
+
+  // These lines create a message that conforms to the structure of the Twist defined in our ROS installation
+  // It initalizes all properties to zero. They will be set to appropriate values before we publish this message.
+  var twist = new ROSLIB.Message({
+    linear : {
+      x : 0.0,
+      y : 0.0,
+      z : 0.0
+    },
+    angular : {
+      x : 0.0,
+      y : 0.0,
+      z : 0.0
+    }
+  });
+~~~
+
+
+Now we write the function to take the numeric value for the Twist objects and publish them to the cmd_velocity topic in ROS, controlling the `turtlesim`. This ends the script.
+
+~~~HTML
+ /* This function:
+	- retrieves numeric values from the text boxes
+	- assigns these values to the appropriate values in the twist message
+	- publishes the message to the cmd_vel topic.
+  */
+  function pubMessage() {
+
+    /**
+    Set the appropriate values on the twist message object according to values in text boxes
+    It seems that turtlesim only uses the x property of the linear object 
+    and the z property of the angular object
+    **/
+    var linearX = 0.0;
+    var angularZ = 0.0;
+
+    // get values from text input fields. Note for simplicity we are not validating.
+    linearX = 0 + Number(document.getElementById('linearXText').value);
+    angularZ = 0 + Number(document.getElementById('angularZText').value);
+
+    // Set the appropriate values on the message object
+    twist.linear.x = linearX;
+    twist.angular.z = angularZ;
+
+    // Publish the message 
+    cmdVelTopic.publish(twist);
+  }
+
+</script>
+</head>
+~~~
+
+Lastly, we create the control panel to write values for the `turtlesim` via our webpage that publishes its messages to our script, before we end the HTML.
+
+~~~HTML
+<body>
+<form name="ctrlPanel">
+<p>Enter positive or negative numeric decimal values in the boxes below</p>
+<table>
+    <tr><td>Linear X</td><td><input id="linearXText" name="linearXText" type="text" value="1.5"/></td></tr>
+    <tr><td>Angular Z</td><td><input id="angularZText" name="angularZText" type="text" value="1.5"/></td></tr>
+</table>
+<button id="sendMsg" type="button" onclick="pubMessage()">Publish Message</button>
+</form>
+<div id="feedback"></div>
+</body>
+</html>
+~~~
+
+To execute this, we created a .launch file which would automatically start `roscore`, WebSocket, `turtlesim_node`, and `turtle_teleop_key`. A user would need to run this launch file after opening the HTML webpage (or refresh the HTML page, if that was opened _before_ running the .launch file).
+
+
+**Second**, we want to control the 'turtlesim' on a local computer online. We put the HTML code on a free site builder, [http://robotwebtools.weebly.com/turtlesim.html], which allowed us to control our running `turtlesim_node` (with WebSocket, `roscore` running). 
+
+**Third**, we tried running `turtlesim` over each other's computer via Ethernet. But we ran into some problems and this did not work (see **Problems We Faced** section).
+
 
 
 ####Insights
 
 ####Difficulties We Faced
 
+Our third step was trying to run `turtlesim` over each other's computer via Ethernet. However, this didn't work, and we ran into the following problems:
+
+* Jackie's computer stopped being able to open `turtlesim_node` for some reason, giving the error `Couldn't find executable named turtlesim_node below /opt/ros/indigo/share/turtlesim`
+
+* Another classmate's laptop didn't work, giving an error that something was not defined in EventEmitter, which was the package that emitted "events" from the HTML back through WebSocket and `rosbridge`. This is probably regarding Ethernet connection.
+
+
 ####Mistakes We Found
 
 ####Useful Resources
-* [`rosbridge`] (http://wiki.ros.org/rosbridge_suite) page on ROS.org
+* [`rosbridge`](http://wiki.ros.org/rosbridge_suite) page on ROS.org
 
