@@ -66,7 +66,7 @@ Next, we created an HTML file to create a website on our local machine. In our w
 
 Next, there is some documented code on connecting, disconnecting, or error in connecting to `rosbridge`.
 
-~~~html    
+~~~javascript    
 	// This function connects to the rosbridge server running on the local computer on port 9090
 	var rbServer = new ROSLIB.Ros({
     url : 'ws://localhost:9090'
@@ -97,7 +97,7 @@ Next, there is some documented code on connecting, disconnecting, or error in co
 
 Now we write the functions to create a topic and write messages to ROS.
 
-~~~HTML
+~~~javascript
 // These lines create a topic object as defined by roslibjs
   var cmdVelTopic = new ROSLIB.Topic({
     ros : rbServer,
@@ -124,7 +124,7 @@ Now we write the functions to create a topic and write messages to ROS.
 
 Now we write the function to take the numeric value for the Twist objects and publish them to the cmd_velocity topic in ROS, controlling the `turtlesim`. This ends the script.
 
-~~~HTML
+~~~javascript
  /* This function:
 	- retrieves numeric values from the text boxes
 	- assigns these values to the appropriate values in the twist message
