@@ -175,9 +175,10 @@ Lastly, we create the control panel to write values for the `turtlesim` via our 
 
 To execute this, we created a .launch file which would automatically start `roscore`, WebSocket, `turtlesim_node`, and `turtle_teleop_key`. A user would need to run this launch file after opening the HTML webpage (or refresh the HTML page, if that was opened _before_ running the .launch file).
 
-EXTRA: We also added arrow key graphics to the HTML to simulate the `turtle_teleop_key` function from ROS. By clicking left or right, the turtle would turn ccw or cw (by manipulating the angular velocity of the Twist message); forward and backward led the turtle to move forward or backward (with the spatial velocity of Twist). The code is below:
+EXTRA: We also added arrow key graphics to the HTML to simulate the `turtle_teleop_key` function from ROS. By clicking left or right, the turtle would turn ccw or cw (by manipulating the angular velocity of the Twist message); forward and backward led the turtle to move forward or backward (with the spatial velocity of Twist). We decided to give an up/down movement, which controls linear velocity, the value of 1; left/right movement, which controls turning through angular velocity, was given π/2 (about 1.57).
+The code is below:
 
-~~~HTML
+~~~javascript
 	//moving with arrow keys
 	
 	function moveup() { 
@@ -211,12 +212,9 @@ EXTRA: We also added arrow key graphics to the HTML to simulate the `turtle_tele
 	};
 ~~~
 
-
-
-The actual keys that use this functionality are coded by:
-
-~~~html
-	<style>
+Next, we created the styles that controlled the size and position of the arrow key buttons.
+ ~~~html
+ 	<style>
 	 button.pos_left {
 	   position: absolute;
 	   left: 20px;
@@ -241,7 +239,20 @@ The actual keys that use this functionality are coded by:
 	</style>
 ~~~
 
-These can be placed anywhere. We placed them below the rest of the control box in our webpage.
+The actual keys that use this functionality are coded by the following block of code. These can be placed anywhere in the HTML depending on where you want the buttons to be; we chose to place them below the rest of the control box in our webpage.
+
+~~~html
+	<p>
+	  <button id="up" type="button" class = "pos_up" onclick="moveup()">&#8593;</button>
+	  <button id="left" type="button" class = "pos_left" onclick="turnleft()">&#8592;</button>
+	  <button id="down" type="button" class = "pos_down" onclick="movedown()">&#8595;</button>
+	  <button id="right" type="button" class = "pos_right" onclick="turnright()">&#8594;</button>
+	</p>
+~~~
+
+
+
+
 
 **Second**, we want to control the 'turtlesim' on a local computer online. We put the HTML code on a free site builder, [http://robotwebtools.weebly.com/turtlesim.html], which allowed us to control our running `turtlesim_node` (with WebSocket, `roscore` running). 
 
