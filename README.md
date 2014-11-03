@@ -175,6 +175,73 @@ Lastly, we create the control panel to write values for the `turtlesim` via our 
 
 To execute this, we created a .launch file which would automatically start `roscore`, WebSocket, `turtlesim_node`, and `turtle_teleop_key`. A user would need to run this launch file after opening the HTML webpage (or refresh the HTML page, if that was opened _before_ running the .launch file).
 
+EXTRA: We also added arrow key graphics to the HTML to simulate the `turtle_teleop_key` function from ROS. By clicking left or right, the turtle would turn ccw or cw (by manipulating the angular velocity of the Twist message); forward and backward led the turtle to move forward or backward (with the spatial velocity of Twist). The code is below:
+
+~~~HTML
+	//moving with arrow keys
+	
+	function moveup() { 
+	twist.linear.x = 1.0;
+	twist.angular.z = 0.0;
+	cmdVelTopic.publish(twist); 
+	};
+	
+	function movedown() { 
+	var linearX = -1.0;
+	var angularZ = 0.0;
+	twist.linear.x = linearX;
+	twist.angular.z = angularZ;
+	cmdVelTopic.publish(twist); 
+	};
+	
+	function turnleft() { 
+	var linearX = 0.0;
+	var angularZ = 1.570796;
+	twist.linear.x = linearX;
+	twist.angular.z = angularZ;
+	cmdVelTopic.publish(twist); 
+	};
+	
+	function turnright() { 
+	var linearX = 0.0;
+	var angularZ = -1.570796;
+	twist.linear.x = linearX;
+	twist.angular.z = angularZ;
+	cmdVelTopic.publish(twist); 
+	};
+~~~
+
+
+
+The actual keys that use this functionality are coded by:
+
+~~~html
+	<style>
+	 button.pos_left {
+	   position: absolute;
+	   left: 20px;
+	   top: 350px;
+	 }
+	 button.pos_right{
+	   position: absolute;
+	   left: 75px;
+	   top: 350px;
+	 }
+	 button.pos_up{
+	   position: absolute;
+	   left: 50px;
+	   top: 325px;
+	 }
+	 button.pos_down{
+	   position: absolute;
+	   left: 50px;
+	   top: 350px;
+	 }
+	
+	</style>
+~~~
+
+These can be placed anywhere. We placed them below the rest of the control box in our webpage.
 
 **Second**, we want to control the 'turtlesim' on a local computer online. We put the HTML code on a free site builder, [http://robotwebtools.weebly.com/turtlesim.html], which allowed us to control our running `turtlesim_node` (with WebSocket, `roscore` running). 
 
@@ -188,10 +255,12 @@ To execute this, we created a .launch file which would automatically start `rosc
 
 Our third step was trying to run `turtlesim` over each other's computer via Ethernet. However, this didn't work, and we ran into the following problems:
 
-* Jackie's computer stopped being able to open `turtlesim_node` for some reason, giving the error `Couldn't find executable named turtlesim_node below /opt/ros/indigo/share/turtlesim`
+* Jackie's computer stopped being able to open `turtlesim_node` for some reason, giving the error 
+> Couldn't find executable named turtlesim_node below /opt/ros/indigo/share/turtlesim
 
 * Another classmate's laptop didn't work, giving an error that something was not defined in EventEmitter, which was the package that emitted "events" from the HTML back through WebSocket and `rosbridge`. This is probably regarding Ethernet connection.
 
+Another problem we had was when we tried to add functionality of controlling the turtle's direction with arrow keys in the HTML webpage. However, we were not able to figure out the Javascript syntax to allow this to happen. 
 
 ####Mistakes We Found
 
